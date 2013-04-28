@@ -13,6 +13,7 @@
 @implementation ZZFileChannel
 {
 	NSURL* _URL;
+	NSURL* _tempDirectory;
 }
 
 - (id)initWithURL:(NSURL*)URL
@@ -34,7 +35,7 @@
 															  appropriateForURL:_URL
 																		 create:NO
 																		  error:error];
-	
+	_tempDirectory = temporaryDirectory;
 	return temporaryDirectory ? [[ZZFileChannel alloc] initWithURL:[temporaryDirectory URLByAppendingPathComponent:_URL.lastPathComponent]] : nil;
 }
 
@@ -52,7 +53,7 @@
 
 - (void)removeAsTemporary
 {
-	[[NSFileManager defaultManager] removeItemAtURL:[_URL URLByDeletingLastPathComponent]
+	[[NSFileManager defaultManager] removeItemAtURL:_tempDirectory
 											  error:nil];
 }
 
